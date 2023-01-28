@@ -312,15 +312,15 @@ class Car_Counting(QtWidgets.QMainWindow):
                     if name == 'motorcycle':
                         area1.add(id)
                         cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
-                    if name == 'car':
-                        area2.add(id)
-                        cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
-                    if name == 'truck':
-                        area3.add(id)
-                        cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
-                    if name == 'bus':
-                        area4.add(id)
-                        cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
+                    # if name == 'car':
+                    #     area2.add(id)
+                    #     cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
+                    # if name == 'truck':
+                    #     area3.add(id)
+                    #     cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
+                    # if name == 'bus':
+                    #     area4.add(id)
+                    #     cv2.polylines(img,[np.array(area_1,np.int32)],True,(0,0,255),3)
             countM = len(area1)
             countC = len(area2)
             countT = len(area3)
