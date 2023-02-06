@@ -71,14 +71,19 @@ class Car_Counting(QtWidgets.QMainWindow):
         buttomRightY = self.yLinebuttom_right.text()
         
         # Setter
-        self.set_topleftX(topLeftX)
-        self.set_topleftY(topLeftY)
-        self.set_buttomleftX(buttomLeftX)
-        self.set_buttomleftY(buttomLeftY)
-        self.set_toprightX(topRightX)
-        self.set_toprightY(topRightY)
-        self.set_buttomrightX(buttomRightX)
-        self.set_buttomrightY(buttomRightY)
+        if topLeftX == '' or topLeftY == '' or buttomLeftX == '' or buttomLeftY == '' or topRightX == '' or topRightY == '' or buttomRightX == '' or buttomRightY == '':
+            QtWidgets.QMessageBox.information(
+                QtWidgets.QMessageBox(), "Error", "กรุณาป้อนข้อมูลให้ครบ"
+            )
+        else:
+            self.set_topleftX(topLeftX)
+            self.set_topleftY(topLeftY)
+            self.set_buttomleftX(buttomLeftX)
+            self.set_buttomleftY(buttomLeftY)
+            self.set_toprightX(topRightX)
+            self.set_toprightY(topRightY)
+            self.set_buttomrightX(buttomRightX)
+            self.set_buttomrightY(buttomRightY)
         
         # Getter
         self.get_topleftX()
@@ -101,8 +106,17 @@ class Car_Counting(QtWidgets.QMainWindow):
     # confidest config
     def set_confiden(self, confident):
         confident = self.lineCon.text()
-        self.con = confident
-        print(self.con)
+        if confident == '':
+             QtWidgets.QMessageBox.information(
+                QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident"
+            )
+        elif confident > str(1) :
+             QtWidgets.QMessageBox.information(
+                QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident ให้อยู่ในช่วง 0.0 - 1"
+            )
+        else:
+            self.con = confident
+            print(self.con)
 
     def get_confiden(self):
         return self.con
@@ -203,9 +217,9 @@ class Car_Counting(QtWidgets.QMainWindow):
             framerate = 30
             rate = int(1000 / framerate)
             self.timer.start(rate)
-            timer01 = QTimer(self)
-            timer01.timeout.connect(self.UpdateFirebase)
-            timer01.start(5000)
+            # timer01 = QTimer(self)
+            # timer01.timeout.connect(self.UpdateFirebase)
+            # timer01.start(5000)
             self.Startbtn.setEnabled(False)
             self.ipBtn.setEnabled(False)
             self.ipEdit.setEnabled(False)
@@ -228,13 +242,13 @@ class Car_Counting(QtWidgets.QMainWindow):
             framerate = 30
             rate = int(1000 / framerate)
             self.timer.start(rate)
-            timer01 = QTimer(self)
-            timer01.timeout.connect(self.UpdateFirebase)
-            timer01.start(5000)
+            # timer01 = QTimer(self)
+            # timer01.timeout.connect(self.UpdateFirebase)
+            # timer01.start(5000)
             self.Startbtn.setEnabled(False)
 
     def load_model(self):
-        model = torch.hub.load("yolov5",'custom', path="yolov5l.pt", source="local",device=0)
+        model = torch.hub.load("yolov5",'custom', path="yolov5m.pt", source="local",device=0)
         return model
 
     def Time(self):
