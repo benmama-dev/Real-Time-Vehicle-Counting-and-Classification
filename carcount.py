@@ -110,7 +110,7 @@ class Car_Counting(QtWidgets.QMainWindow):
              QtWidgets.QMessageBox.information(
                 QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident"
             )
-        elif confident > str(1) :
+        elif confident > str(1) and confident < str(0)  :
              QtWidgets.QMessageBox.information(
                 QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident ให้อยู่ในช่วง 0.0 - 1"
             )
