@@ -21,9 +21,6 @@ time_start = time.strftime("%H:%M:%S", timeis)
 time_start_firebase = time.strftime("%H%M%S", timeis)
 day = time.strftime("%Y/%m/%d", timeis)
 day_firebase = time.strftime("%d%m%Y", timeis)
-d = time.strftime("%d", timeis)
-m = time.strftime("%m", timeis)
-Y = time.strftime("%Y", timeis)
 
 tracker = Tracker()
 area1 =set()
@@ -35,6 +32,7 @@ countC = 0;
 countT = 0;
 countB = 0;
 countTotal = 0;
+
 class Car_Counting(QtWidgets.QMainWindow):
     def __init__(self):
         super(Car_Counting, self).__init__()
@@ -45,7 +43,7 @@ class Car_Counting(QtWidgets.QMainWindow):
         self.submit.clicked.connect(self.setText)
         self.lineConbtn.clicked.connect(self.set_confiden)
         self.model = self.load_model();
-        self.label.mouseMoveEvent = self.POINTS
+        self.label.mousePressEvent = self.POINTS
         self.set_confiden(0.0);
         self.set_topleftX(0)
         self.set_topleftY(0)
@@ -95,14 +93,13 @@ class Car_Counting(QtWidgets.QMainWindow):
         self.get_buttomrightX()
         self.get_buttomrightY()
         
-    
-    
     def POINTS(self, event):
         x = event.x()
         y = event.y()
-        self.TextX.setText(str(x))
-        self.TextY.setText(str(y))
-    
+        if event.buttons() == QtCore.Qt.LeftButton:
+            self.TextX.setText(str(x))
+            self.TextY.setText(str(y))
+        
     # confidest config
     def set_confiden(self, confident):
         confident = self.lineCon.text()
@@ -110,7 +107,7 @@ class Car_Counting(QtWidgets.QMainWindow):
              QtWidgets.QMessageBox.information(
                 QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident"
             )
-        elif confident > str(1) and confident < str(0)  :
+        elif confident > str(1) or confident < str(0)  :
              QtWidgets.QMessageBox.information(
                 QtWidgets.QMessageBox(), "Error", "กรุณาป้อนค่า Confident ให้อยู่ในช่วง 0.0 - 1"
             )
@@ -217,9 +214,9 @@ class Car_Counting(QtWidgets.QMainWindow):
             framerate = 30
             rate = int(1000 / framerate)
             self.timer.start(rate)
-            # timer01 = QTimer(self)
-            # timer01.timeout.connect(self.UpdateFirebase)
-            # timer01.start(5000)
+            timer01 = QTimer(self)
+            timer01.timeout.connect(self.UpdateFirebase)
+            timer01.start(5000)
             self.Startbtn.setEnabled(False)
             self.ipBtn.setEnabled(False)
             self.ipEdit.setEnabled(False)
@@ -242,9 +239,9 @@ class Car_Counting(QtWidgets.QMainWindow):
             framerate = 30
             rate = int(1000 / framerate)
             self.timer.start(rate)
-            # timer01 = QTimer(self)
-            # timer01.timeout.connect(self.UpdateFirebase)
-            # timer01.start(5000)
+            timer01 = QTimer(self)
+            timer01.timeout.connect(self.UpdateFirebase)
+            timer01.start(5000)
             self.Startbtn.setEnabled(False)
 
     def load_model(self):
