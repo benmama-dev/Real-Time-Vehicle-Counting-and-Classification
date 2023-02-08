@@ -32,7 +32,8 @@ countC = 0;
 countT = 0;
 countB = 0;
 countTotal = 0;
-
+point = []
+point1 = []
 class Car_Counting(QtWidgets.QMainWindow):
     def __init__(self):
         super(Car_Counting, self).__init__()
@@ -99,7 +100,26 @@ class Car_Counting(QtWidgets.QMainWindow):
         if event.buttons() == QtCore.Qt.LeftButton:
             self.TextX.setText(str(x))
             self.TextY.setText(str(y))
-        
+            point.append(x)
+            point1.append(y)
+            print(point)
+            print(point1)
+            if len(point) > 0 and len(point1) > 0:
+                self.xLinetop_left.setText(str(point[0]))
+                self.yLinetop_left.setText(str(point1[0]))
+            if len(point) > 1 and len(point1) > 1:
+                self.xLinebuttom_left.setText(str(point[1]))
+                self.yLinebuttom_left.setText(str(point1[1]))
+            if len(point) > 2 and len(point1) > 2:
+                self.xLinetop_right.setText(str(point[2]))
+                self.yLinetop_right.setText(str(point1[2]))
+            if len(point) > 3 and len(point1) > 3:
+                self.xLinebuttom_right.setText(str(point[3]))
+                self.yLinebuttom_right.setText(str(point1[3]))
+                point.clear()
+                point1.clear()
+
+
     # confidest config
     def set_confiden(self, confident):
         confident = self.lineCon.text()
