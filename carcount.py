@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5 import QtWidgets, uic, QtCore,QtGui
 import sys
 import cv2
 import torch
@@ -259,10 +259,13 @@ class Car_Counting(QtWidgets.QMainWindow):
             framerate = 30
             rate = int(1000 / framerate)
             self.timer.start(rate)
-            timer01 = QTimer(self)
-            timer01.timeout.connect(self.UpdateFirebase)
-            timer01.start(5000)
+            self.timer01 = QTimer(self)
+            self.timer01.timeout.connect(self.UpdateFirebase)
+            self.timer01.start(5000)
             self.Startbtn.setEnabled(False)
+            self.ipBtn.setEnabled(False)
+            self.ipEdit.setEnabled(False)
+            self.clearBtn.setEnabled(False)
 
     def load_model(self):
         model = torch.hub.load("yolov5",'custom', path="yolov5m.pt", source="local",device=0)
@@ -330,6 +333,7 @@ class Car_Counting(QtWidgets.QMainWindow):
                     if clas == 2 or clas == 3 or clas == 5 or clas == 7:
                         list.append([x1,y1,x2,y2,name,conff])
             boxes_ids=tracker.update(list)
+
             for box_id in boxes_ids:
                 x,y,w,h,id,name,conff=box_id
                 cv2.rectangle(img,(x,y),(w,h),(255, 0, 20),1)
@@ -362,14 +366,32 @@ class Car_Counting(QtWidgets.QMainWindow):
             self.truckLabel.setText(str(countT))
             self.busLabel.setText(str(countB))
             self.totalLabel.setText(str(countTotal))
-        img = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
-        pix = QPixmap.fromImage(img)
-        pix = pix.scaled(
+            img = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
+            pix = QPixmap.fromImage(img)
+            pix = pix.scaled(
                 self.label.width(), self.label.height(), QtCore.Qt.KeepAspectRatio
             )
-        self.label.setPixmap(pix)
-        self.widthLabel.setText(str(width))
-        self.heightLabel.setText(str(height))
+            self.label.setPixmap(pix)
+            self.widthLabel.setText(str(width))
+            self.heightLabel.setText(str(height))
+        elif not ret:
+            QtWidgets.QMessageBox.information(
+                QtWidgets.QMessageBox(), "Error", "วิดีโอสิ้นสุดแล้ว"
+            )
+            self.cap.release()
+            self.timer.stop()
+            self.timer01.stop()
+            self.Startbtn.setEnabled(True)
+            self.ipBtn.setEnabled(True)
+            self.ipEdit.setEnabled(True)
+            self.clearBtn.setEnabled(True)
+            self.label.setPixmap(QPixmap())
+            self.label.setText("VIDEO")
+            self.label.setFont(QtGui.QFont("MS Shell Dlg 2", 36))
+            self.label.setAlignment(QtCore.Qt.AlignCenter)
+            self.cap = None
+            self.timer = None
+            self.timer01 = None
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
